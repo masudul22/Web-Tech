@@ -61,11 +61,9 @@
 </head>
 <body>
 
-  <!-- ARIA: banner is the landmark role for the site header -->
-  <header role="banner">
+  <header>
     <h1>Masudul Hasan Shakil</h1>
-    <!-- ARIA: navigation landmark with a label so screen readers can name it -->
-    <nav role="navigation" aria-label="Main navigation">
+    <nav aria-label="Main navigation">
       <a href="#">Home</a>
       <a href="#">About</a>
       <a href="#">Articles</a>
@@ -73,13 +71,10 @@
     </nav>
   </header>
 
-  <!-- ARIA: main landmark identifies the primary content area -->
-  <main role="main">
+  <main>
 
-    <!-- ARIA: each article is labelled by its heading via aria-labelledby -->
     <article aria-labelledby="article-royal-hotel">
       <h2 id="article-royal-hotel">Have you watched The Royal Hotel?</h2>
-      <!-- ARIA: link opens in new tab — aria-label warns the user -->
       <a href="https://www.imdb.com/title/tt18363072/" target="_blank" aria-label="The Royal Hotel on IMDB (opens in new tab)">
         <img
           src="theroyalhotel.webp"
@@ -104,15 +99,13 @@
       </p>
     </article>
 
-    <!-- ARIA: role="region" with aria-labelledby makes this a named landmark -->
-    <article aria-labelledby="article-poem" role="region">
+    <article aria-labelledby="article-poem">
       <h2 id="article-poem">People are Like Fungus</h2>
       <img
         src="fungus.avif"
         alt="Poem illustration"
       />
-      <!-- ARIA: role="doc-poem" identifies this as a poem for assistive technology -->
-      <pre role="doc-poem" aria-label="Poem: We Are Like Fungus, written at 3:45am 30th November 2016" style="font-family: inherit; white-space: pre-wrap; line-height: 1.8; font-size: 0.95rem;">
+      <pre aria-label="Poem: We Are Like Fungus, written at 3:45am 30th November 2016" style="font-family: inherit; white-space: pre-wrap; line-height: 1.8; font-size: 0.95rem;">
         we are like fungus,
         we grow around them
         as people gets to know us.
@@ -163,7 +156,6 @@
       </pre>
     </article>
 
-    <!-- ARIA: role="form" with aria-labelledby makes the form a named landmark -->
     <section id="contact" role="region" aria-labelledby="contact-heading" style="max-width: 860px; margin: 40px auto 60px; padding: 0 24px;">
       <h2 id="contact-heading" style="color: #1a1a2e; margin-bottom: 8px;">Contact</h2>
       <p style="margin-bottom: 24px; color: #555;">Leave your contact information, we will get back to you as soon as we can.</p>
@@ -172,7 +164,6 @@
         action="#"
         method="POST"
         novalidate
-        role="form"
         aria-label="Contact form"
         style="background: #f9f9f9; padding: 32px; border-radius: 8px;"
       >
@@ -192,7 +183,6 @@
             aria-describedby="name-error"
             style="width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; outline-offset: 2px;"
           />
-          <!-- ARIA: role="alert" means screen readers announce this automatically when it appears -->
           <span id="name-error" role="alert" aria-live="polite" style="color: red; font-size: 0.85rem; display: none;">Please enter your full name.</span>
         </div>
 
@@ -228,7 +218,6 @@
             aria-describedby="phone-hint"
             style="width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; outline-offset: 2px;"
           />
-          <!-- ARIA: aria-describedby links this hint text to the input above -->
           <span id="phone-hint" style="font-size: 0.82rem; color: #777;">Optional. Include country code.</span>
         </div>
 
@@ -245,11 +234,10 @@
             aria-describedby="message-hint"
             style="width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; resize: vertical; outline-offset: 2px;"
           ></textarea>
-          <span id="message-hint" style="color: red; font-size: 0.85rem; display: none;">Please enter a message.</span>
+          <span id="message-hint" style="font-size: 0.82rem; color: #777;">Optional. Tell us how we can help.</span>
         </div>
 
         <!-- Required note -->
-        <!-- ARIA: aria-hidden hides the decorative asterisk, the text explains it -->
         <p style="font-size: 0.85rem; color: #777; margin-bottom: 20px;">
           <span aria-hidden="true" style="color: red;">*</span> Required fields
         </p>
@@ -264,7 +252,6 @@
       </form>
     </section>
 
-    <!-- ARIA: aria-label describes the button purpose for screen readers -->
     <button
       onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
       aria-label="Back to top of page"
@@ -286,8 +273,7 @@
 
   </main>
 
-  <!-- ARIA: contentinfo is the landmark role for the site footer -->
-  <footer role="contentinfo">
+  <footer>
     <p>&copy; 2026 MySite. All rights reserved.</p>
   </footer>
 
