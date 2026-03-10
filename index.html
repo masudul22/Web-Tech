@@ -61,9 +61,11 @@
 </head>
 <body>
 
-  <header>
+  <!-- ARIA: banner is the landmark role for the site header -->
+  <header role="banner">
     <h1>Masudul Hasan Shakil</h1>
-    <nav>
+    <!-- ARIA: navigation landmark with a label so screen readers can name it -->
+    <nav role="navigation" aria-label="Main navigation">
       <a href="#">Home</a>
       <a href="#">About</a>
       <a href="#">Articles</a>
@@ -71,40 +73,46 @@
     </nav>
   </header>
 
-  <main>
-    <article>
-      <h2>Have you watched The Royal Hotel?</h2>
-      <a href="https://www.imdb.com/title/tt18363072/" target="_blank">
+  <!-- ARIA: main landmark identifies the primary content area -->
+  <main role="main">
+
+    <!-- ARIA: each article is labelled by its heading via aria-labelledby -->
+    <article aria-labelledby="article-royal-hotel">
+      <h2 id="article-royal-hotel">Have you watched The Royal Hotel?</h2>
+      <!-- ARIA: link opens in new tab — aria-label warns the user -->
+      <a href="https://www.imdb.com/title/tt18363072/" target="_blank" aria-label="The Royal Hotel on IMDB (opens in new tab)">
         <img
           src="theroyalhotel.webp"
           alt="The Royal Hotel 2023 movie poster featuring Julia Garner and Jessica Henwick"
         />
       </a>
       <p>
-        It is a 2023 Australian psychological thriller directed by Kitty Green, starring Julia Garner, Jessica Henwick, and Hugo Weaving.  The story follows two best friends backpacking in Australia who run out of money and take a live-in bartending job at a remote outback pub called The Royal Hotel. What starts as a way to earn some cash quickly turns into an unsettling situation as the locals' behavior begins to cross the line.  The film is inspired by the 2016 documentary Hotel Coolgardie by Pete Gleeson. 
+        It is a 2023 Australian psychological thriller directed by Kitty Green, starring Julia Garner, Jessica Henwick, and Hugo Weaving. The story follows two best friends backpacking in Australia who run out of money and take a live-in bartending job at a remote outback pub called The Royal Hotel. What starts as a way to earn some cash quickly turns into an unsettling situation as the locals' behavior begins to cross the line. The film is inspired by the 2016 documentary Hotel Coolgardie by Pete Gleeson.
       </p>
     </article>
 
-    <article>
-      <h2>Have you watched Blink Twice?</h2>
-      <a href="https://www.imdb.com/title/tt14858658/" target="_blank">
+    <article aria-labelledby="article-blink-twice">
+      <h2 id="article-blink-twice">Have you watched Blink Twice?</h2>
+      <a href="https://www.imdb.com/title/tt14858658/" target="_blank" aria-label="Blink Twice on IMDB (opens in new tab)">
         <img
           src="blink-twice.jpg"
           alt="Blink Twice 2024 movie poster featuring Naomi Ackie and Channing Tatum"
         />
       </a>
       <p>
-        It is a 2024 American psychological thriller directed by Zoë Kravitz in her feature directorial debut, starring Naomi Ackie and Channing Tatum.  The story follows a cocktail waitress named Frida who gets invited by tech billionaire Slater King to his private island for a dream vacation — but as strange things begin to happen, she starts to question her reality and must uncover the truth to survive.  If you have been following the Epstein files and find yourself troubled by stories of powerful men and their private islands, this movie will feel uncomfortably familiar — it taps into that same unsettling world of wealth, abuse, and silence. Note that the film contains mature themes including depictions of violence and sexual violence. 
+        It is a 2024 American psychological thriller directed by Zoë Kravitz in her feature directorial debut, starring Naomi Ackie and Channing Tatum. The story follows a cocktail waitress named Frida who gets invited by tech billionaire Slater King to his private island for a dream vacation — but as strange things begin to happen, she starts to question her reality and must uncover the truth to survive. If you have been following the Epstein files and find yourself troubled by stories of powerful men and their private islands, this movie will feel uncomfortably familiar — it taps into that same unsettling world of wealth, abuse, and silence. Note that the film contains mature themes including depictions of violence and sexual violence.
       </p>
     </article>
 
-    <article>
-      <h2>People are Like Fungus</h2>
+    <!-- ARIA: role="region" with aria-labelledby makes this a named landmark -->
+    <article aria-labelledby="article-poem" role="region">
+      <h2 id="article-poem">People are Like Fungus</h2>
       <img
         src="fungus.avif"
         alt="Poem illustration"
       />
-      <pre style="font-family: inherit; white-space: pre-wrap; line-height: 1.8; font-size: 0.95rem;">
+      <!-- ARIA: role="doc-poem" identifies this as a poem for assistive technology -->
+      <pre role="doc-poem" aria-label="Poem: We Are Like Fungus, written at 3:45am 30th November 2016" style="font-family: inherit; white-space: pre-wrap; line-height: 1.8; font-size: 0.95rem;">
         we are like fungus,
         we grow around them
         as people gets to know us.
@@ -155,11 +163,19 @@
       </pre>
     </article>
 
-    <section id="contact" style="max-width: 860px; margin: 40px auto 60px; padding: 0 24px;">
-      <h2 style="color: #1a1a2e; margin-bottom: 8px;">Contact</h2>
+    <!-- ARIA: role="form" with aria-labelledby makes the form a named landmark -->
+    <section id="contact" role="region" aria-labelledby="contact-heading" style="max-width: 860px; margin: 40px auto 60px; padding: 0 24px;">
+      <h2 id="contact-heading" style="color: #1a1a2e; margin-bottom: 8px;">Contact</h2>
       <p style="margin-bottom: 24px; color: #555;">Leave your contact information, we will get back to you as soon as we can.</p>
 
-      <form action="#" method="POST" novalidate style="background: #f9f9f9; padding: 32px; border-radius: 8px;">
+      <form
+        action="#"
+        method="POST"
+        novalidate
+        role="form"
+        aria-label="Contact form"
+        style="background: #f9f9f9; padding: 32px; border-radius: 8px;"
+      >
 
         <!-- Name -->
         <div style="margin-bottom: 20px;">
@@ -171,10 +187,13 @@
             id="name"
             name="name"
             required
+            autocomplete="name"
             placeholder="John Smith"
+            aria-describedby="name-error"
             style="width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; outline-offset: 2px;"
           />
-          <span style="color: red; font-size: 0.85rem; display: none;">Please enter your full name.</span>
+          <!-- ARIA: role="alert" means screen readers announce this automatically when it appears -->
+          <span id="name-error" role="alert" aria-live="polite" style="color: red; font-size: 0.85rem; display: none;">Please enter your full name.</span>
         </div>
 
         <!-- Email -->
@@ -187,10 +206,12 @@
             id="email"
             name="email"
             required
+            autocomplete="email"
             placeholder="you@example.com"
+            aria-describedby="email-error"
             style="width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; outline-offset: 2px;"
           />
-          <span style="color: red; font-size: 0.85rem; display: none;">Please enter a valid email address.</span>
+          <span id="email-error" role="alert" aria-live="polite" style="color: red; font-size: 0.85rem; display: none;">Please enter a valid email address.</span>
         </div>
 
         <!-- Phone -->
@@ -202,10 +223,13 @@
             type="tel"
             id="phone"
             name="phone"
+            autocomplete="tel"
             placeholder="+61 400 000 000"
+            aria-describedby="phone-hint"
             style="width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; outline-offset: 2px;"
           />
-          <span style="font-size: 0.82rem; color: #777;">Optional. Include country code.</span>
+          <!-- ARIA: aria-describedby links this hint text to the input above -->
+          <span id="phone-hint" style="font-size: 0.82rem; color: #777;">Optional. Include country code.</span>
         </div>
 
         <!-- Message -->
@@ -218,42 +242,52 @@
             name="message"
             rows="5"
             placeholder="Write your message here..."
+            aria-describedby="message-hint"
             style="width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; resize: vertical; outline-offset: 2px;"
           ></textarea>
-          <span style="color: red; font-size: 0.85rem; display: none;">Please enter a message.</span>
+          <span id="message-hint" style="color: red; font-size: 0.85rem; display: none;">Please enter a message.</span>
         </div>
 
         <!-- Required note -->
+        <!-- ARIA: aria-hidden hides the decorative asterisk, the text explains it -->
         <p style="font-size: 0.85rem; color: #777; margin-bottom: 20px;">
-          <span style="color: red;">*</span> Required fields
+          <span aria-hidden="true" style="color: red;">*</span> Required fields
         </p>
 
         <!-- Submit -->
         <button
           type="submit"
+          aria-label="Submit contact form"
           style="background: #1a1a2e; color: white; border: none; padding: 12px 28px; border-radius: 6px; font-size: 1rem; cursor: pointer;"
         >Send Message</button>
 
       </form>
     </section>
 
-    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="
-      position: fixed;
-      bottom: 32px;
-      right: 32px;
-      background: #1a1a2e;
-      color: white;
-      border: none;
-      padding: 12px 16px;
-      border-radius: 8px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: opacity 0.3s;
-      " title="Back to top">↑</button>
-      </main>
+    <!-- ARIA: aria-label describes the button purpose for screen readers -->
+    <button
+      onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+      aria-label="Back to top of page"
+      title="Back to top"
+      style="
+        position: fixed;
+        bottom: 32px;
+        right: 32px;
+        background: #1a1a2e;
+        color: white;
+        border: none;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        transition: opacity 0.3s;
+      ">↑</button>
 
-  <footer>
+  </main>
+
+  <!-- ARIA: contentinfo is the landmark role for the site footer -->
+  <footer role="contentinfo">
     <p>&copy; 2026 MySite. All rights reserved.</p>
   </footer>
 
