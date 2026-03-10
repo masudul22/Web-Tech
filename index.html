@@ -22,6 +22,41 @@
     article img { width: 100%; max-height: 320px; object-fit: cover; border-radius: 6px; margin-bottom: 16px; }
 
     footer { background: #1a1a2e; color: #aaa; text-align: center; padding: 20px; font-size: 0.85rem; }
+
+    /* Input focus highlight */
+    input:focus, textarea:focus {
+      outline: 2px solid #1a1a2e;
+      border-color: #1a1a2e;
+    }
+
+    /* Red border on invalid fields after user interacts */
+    input:not(:placeholder-shown):invalid,
+    textarea:not(:placeholder-shown):invalid {
+      border-color: red;
+    }
+
+    /* Show error message when field is invalid and touched */
+    input:not(:placeholder-shown):invalid + span,
+    textarea:not(:placeholder-shown):invalid + span {
+      display: block !important;
+    }
+
+    /* Green border when valid */
+    input:not(:placeholder-shown):valid,
+    textarea:not(:placeholder-shown):valid {
+      border-color: green;
+    }
+
+    /* Button hover */
+    button[type="submit"]:hover {
+      background: #2a2a4e;
+    }
+
+    /* Button focus for keyboard users */
+    button[type="submit"]:focus {
+      outline: 2px solid #1a1a2e;
+      outline-offset: 3px;
+    }
   </style>
 </head>
 <body>
@@ -32,7 +67,7 @@
       <a href="#">Home</a>
       <a href="#">About</a>
       <a href="#">Articles</a>
-      <a href="#">Contact</a>
+      <a href="#contact">Contact</a>
     </nav>
   </header>
 
@@ -119,6 +154,88 @@
         3.45 am, 30th Nov 16
       </pre>
     </article>
+
+    <section id="contact" style="max-width: 860px; margin: 40px auto 60px; padding: 0 24px;">
+      <h2 style="color: #1a1a2e; margin-bottom: 8px;">Contact</h2>
+      <p style="margin-bottom: 24px; color: #555;">Leave your contact information, we will get back to you as soon as we can.</p>
+
+      <form action="#" method="POST" novalidate style="background: #f9f9f9; padding: 32px; border-radius: 8px;">
+
+        <!-- Name -->
+        <div style="margin-bottom: 20px;">
+          <label for="name" style="display: block; font-weight: bold; margin-bottom: 6px;">
+            Full Name <span aria-hidden="true" style="color: red;">*</span>
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            placeholder="John Smith"
+            style="width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; outline-offset: 2px;"
+          />
+          <span style="color: red; font-size: 0.85rem; display: none;">Please enter your full name.</span>
+        </div>
+
+        <!-- Email -->
+        <div style="margin-bottom: 20px;">
+          <label for="email" style="display: block; font-weight: bold; margin-bottom: 6px;">
+            Email Address <span aria-hidden="true" style="color: red;">*</span>
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="you@example.com"
+            style="width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; outline-offset: 2px;"
+          />
+          <span style="color: red; font-size: 0.85rem; display: none;">Please enter a valid email address.</span>
+        </div>
+
+        <!-- Phone -->
+        <div style="margin-bottom: 20px;">
+          <label for="phone" style="display: block; font-weight: bold; margin-bottom: 6px;">
+            Phone Number
+          </label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="+61 400 000 000"
+            style="width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; outline-offset: 2px;"
+          />
+          <span style="font-size: 0.82rem; color: #777;">Optional. Include country code.</span>
+        </div>
+
+        <!-- Message -->
+        <div style="margin-bottom: 20px;">
+          <label for="message" style="display: block; font-weight: bold; margin-bottom: 6px;">
+            Message
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            rows="5"
+            placeholder="Write your message here..."
+            style="width: 100%; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; resize: vertical; outline-offset: 2px;"
+          ></textarea>
+          <span style="color: red; font-size: 0.85rem; display: none;">Please enter a message.</span>
+        </div>
+
+        <!-- Required note -->
+        <p style="font-size: 0.85rem; color: #777; margin-bottom: 20px;">
+          <span style="color: red;">*</span> Required fields
+        </p>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          style="background: #1a1a2e; color: white; border: none; padding: 12px 28px; border-radius: 6px; font-size: 1rem; cursor: pointer;"
+        >Send Message</button>
+
+      </form>
+    </section>
 
     <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="
       position: fixed;
