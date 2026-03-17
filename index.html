@@ -5,75 +5,706 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="A simple web page demonstrating HTML5 semantic structure and layout." />
   <title>Masudul Hasan Shakil</title>
-  <link rel="stylesheet" href="style_week03.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── Design Tokens ─── */
+    :root {
+      --bg:         #f5f3ee;
+      --surface:    #ffffff;
+      --ink:        #1c1c1c;
+      --ink-muted:  #666;
+      --accent:     #c0392b;
+      --accent-2:   #1a1a2e;
+      --border:     #e0ddd5;
+      --radius:     10px;
+      --gap:        28px;
+      --font-display: 'DM Serif Display', Georgia, serif;
+      --font-body:    'DM Sans', sans-serif;
+      --shadow:     0 2px 16px rgba(0,0,0,0.07);
+      --transition: 0.22s ease;
+    }
+
+    /* ─── Reset ─── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    /* ─── HEADER & NAV ─── */
+    header {
+      background: var(--accent-2);
+      color: white;
+      padding: 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    }
+
+    .site-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      letter-spacing: 0.01em;
+      color: white;
+    }
+
+    /* Semantic nav — desktop horizontal menu */
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    nav a {
+      color: rgba(255,255,255,0.82);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 6px;
+      transition: background var(--transition), color var(--transition);
+      letter-spacing: 0.03em;
+    }
+
+    nav a:hover,
+    nav a:focus {
+      background: rgba(255,255,255,0.12);
+      color: white;
+      outline: none;
+    }
+
+    /* ── Hamburger button ── hidden on desktop */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 6px;
+      transition: background var(--transition);
+    }
+    .hamburger:hover { background: rgba(255,255,255,0.12); }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: white;
+      border-radius: 2px;
+      transition: transform var(--transition), opacity var(--transition);
+    }
+
+    /* Animated hamburger → X */
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile nav drawer */
+    .nav-drawer {
+      display: none;
+      flex-direction: column;
+      background: var(--accent-2);
+      padding: 12px 20px 20px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      z-index: 99;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      animation: slideDown 0.2s ease;
+    }
+    .nav-drawer.open { display: flex; }
+    .nav-drawer a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 12px 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      transition: color var(--transition);
+    }
+    .nav-drawer a:last-child { border-bottom: none; }
+    .nav-drawer a:hover { color: white; }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── HERO STRIP ─── */
+    .hero-strip {
+      background: linear-gradient(135deg, #1a1a2e 0%, #2d2d4e 60%, #c0392b 130%);
+      padding: 56px 40px 48px;
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-strip::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-strip h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      position: relative;
+    }
+    .hero-strip p {
+      margin-top: 10px;
+      opacity: 0.7;
+      font-size: 1rem;
+      position: relative;
+    }
+
+    /* ─── MAIN CONTENT ─── */
+    main {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 48px 40px 64px;
+    }
+
+    /* Section label */
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 18px;
+    }
+
+    /* ─── 4-COLUMN GRID (desktop) ─── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--gap);
+      margin-bottom: 56px;
+    }
+
+    /* ─── CARD ─── */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    }
+
+    .card-img {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-body {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(192, 57, 43, 0.08);
+      padding: 3px 8px;
+      border-radius: 4px;
+      align-self: flex-start;
+    }
+
+    .card h2 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.35;
+    }
+
+    .card p {
+      font-size: 0.88rem;
+      color: var(--ink-muted);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--accent-2);
+      text-decoration: none;
+      border-bottom: 1.5px solid var(--accent-2);
+      padding-bottom: 1px;
+      align-self: flex-start;
+      transition: color var(--transition), border-color var(--transition);
+    }
+    .card-link:hover { color: var(--accent); border-color: var(--accent); }
+    .card-link::after { content: ' →'; }
+
+    /* ─── POEM CARD (spans 2 cols on desktop) ─── */
+    .card-poem {
+      grid-column: span 2;
+    }
+    .card-poem .card-body { gap: 14px; }
+    .card-poem pre {
+      font-family: var(--font-body);
+      white-space: pre-wrap;
+      line-height: 1.85;
+      font-size: 0.9rem;
+      color: var(--ink);
+      border-left: 3px solid var(--accent);
+      padding-left: 18px;
+    }
+    .poem-meta {
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      font-style: italic;
+    }
+    .card-poem .card-img {
+      aspect-ratio: 16/6;
+      object-fit: cover;
+    }
+
+    /* ─── CONTACT SECTION ─── */
+    .contact-section {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 40px 44px;
+      max-width: 680px;
+    }
+
+    .contact-section h2 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--accent-2);
+      margin-bottom: 6px;
+    }
+    .contact-section .sub {
+      color: var(--ink-muted);
+      font-size: 0.9rem;
+      margin-bottom: 28px;
+    }
+
+    /* Form layout — flexbox */
+    .form-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 20px;
+    }
+    .form-row .form-group { flex: 1; }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+    }
+    label .req { color: var(--accent); margin-left: 2px; }
+
+    input, textarea {
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--ink);
+      background: #fafaf8;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent-2);
+      box-shadow: 0 0 0 3px rgba(26,26,46,0.09);
+      background: white;
+    }
+    input:not(:placeholder-shown):invalid,
+    textarea:not(:placeholder-shown):invalid { border-color: var(--accent); }
+    input:not(:placeholder-shown):invalid + .field-msg,
+    textarea:not(:placeholder-shown):invalid + .field-msg { display: block !important; }
+    input:not(:placeholder-shown):valid,
+    textarea:not(:placeholder-shown):valid { border-color: #2ecc71; }
+
+    .field-msg  { font-size: 0.8rem; color: var(--accent); display: none; }
+    .field-hint { font-size: 0.8rem; color: var(--ink-muted); }
+
+    textarea { resize: vertical; min-height: 120px; }
+
+    .form-note { font-size: 0.8rem; color: var(--ink-muted); }
+
+    .btn-submit {
+      background: var(--accent-2);
+      color: white;
+      border: none;
+      padding: 13px 32px;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      align-self: flex-start;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+    .btn-submit:hover  { background: #2a2a4e; box-shadow: 0 4px 16px rgba(26,26,46,0.25); transform: translateY(-1px); }
+    .btn-submit:focus  { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+    .btn-submit:active { transform: translateY(0); }
+
+    /* ─── BACK TO TOP ─── */
+    .back-top {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background: var(--accent-2);
+      color: white;
+      border: none;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      transition: background var(--transition), transform var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .back-top:hover { background: var(--accent); transform: translateY(-2px); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--accent-2);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 24px 40px;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── RESPONSIVE BREAKPOINTS ─── */
+
+    /* Tablet: 2 columns */
+    @media (max-width: 960px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .card-poem { grid-column: span 2; }
+      main { padding: 36px 28px 56px; }
+    }
+
+    /* Mobile: 1 column + hamburger */
+    @media (max-width: 640px) {
+      header { padding: 0 20px; }
+      .hero-strip { padding: 40px 24px 36px; }
+
+      /* Show hamburger, hide desktop nav links */
+      .hamburger { display: flex; }
+      nav.desktop-nav { display: none; }
+
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .card-poem   { grid-column: span 1; }
+      .card-poem .card-img { aspect-ratio: 16/7; }
+      .card-img    { aspect-ratio: 16/9; }
+
+      main { padding: 28px 16px 48px; }
+
+      .contact-section  { padding: 28px 20px; }
+      .form-row         { flex-direction: column; }
+
+      .back-top { bottom: 20px; right: 20px; }
+    }
+  </style>
 </head>
 <body>
 
+  <!-- ─── HEADER ─── -->
   <header>
-    <h1>M.H. Shakil</h1>
-    <nav aria-label="Main navigation">
-      <input type="checkbox" id="menu-toggle">
-      <label for="menu-toggle" class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
-      </label>
-      <ul class="nav-menu">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Articles</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
+    <span class="site-title">Masudul Hasan Shakil</span>
+
+    <!-- Desktop horizontal menu (semantic nav) -->
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Articles</a>
+      <a href="#contact">Contact</a>
     </nav>
+
+    <!-- Mobile hamburger toggle -->
+    <button
+      class="hamburger"
+      id="hamburger-btn"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      aria-controls="nav-drawer"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </header>
 
+  <!-- Mobile nav drawer -->
+  <nav class="nav-drawer" id="nav-drawer" aria-label="Mobile navigation">
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Articles</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero-strip" aria-label="Site introduction">
+    <h2>Thoughts, Reviews &amp; Verse</h2>
+    <p>A personal corner of the internet.</p>
+  </section>
+
+  <!-- ─── MAIN ─── -->
   <main>
-    <article aria-labelledby="article-royal-hotel">
-      <h2 id="article-royal-hotel">The Royal Hotel</h2>
-      <a href="https://www.imdb.com/title/tt18363072/" target="_blank">
-        <img src="theroyalhotel.webp" alt="The Royal Hotel poster" />
-      </a>
-      <p>An Australian psychological thriller following two backpackers in a remote outback pub.</p>
-    </article>
 
-    <article aria-labelledby="article-blink-twice">
-      <h2 id="article-blink-twice">Blink Twice</h2>
-      <a href="https://www.imdb.com/title/tt14858658/" target="_blank">
-        <img src="blink-twice.jpg" alt="Blink Twice poster" />
-      </a>
-      <p>Zoë Kravitz's directorial debut exploring wealth and survival on a private island.</p>
-    </article>
+    <p class="section-label">Featured Articles</p>
 
-    <article id="article-poem" aria-labelledby="poem-heading">
-      <h2 id="poem-heading">People are Like Fungus</h2>
-      <img src="fungus.avif" alt="Poem illustration" />
-      <pre>
-we are like fungus,
-we grow around them...
-(3.45 am, 30th Nov 16)
-      </pre>
-    </article>
+    <!-- Responsive grid: 4-col desktop → 2-col tablet → 1-col mobile -->
+    <div class="grid" role="list">
 
-    <section id="contact" role="region" aria-labelledby="contact-heading">
-      <h2 id="contact-heading">Contact</h2>
-      <form action="#" method="POST" novalidate>
-        <input type="text" placeholder="Full Name" required />
-        <input type="email" placeholder="Email Address" required />
-        <textarea rows="4" placeholder="Your Message"></textarea>
-        <button type="submit">Send Message</button>
-      </form>
+      <!-- Card 1: The Royal Hotel -->
+      <article class="card" aria-labelledby="article-royal-hotel" role="listitem">
+        <a href="https://www.imdb.com/title/tt18363072/" target="_blank" rel="noopener" aria-label="View The Royal Hotel on IMDB (opens in new tab)">
+          <img
+            class="card-img"
+            src="theroyalhotel.webp"
+            alt="The Royal Hotel 2023 movie poster featuring Julia Garner and Jessica Henwick"
+            loading="lazy"
+          />
+        </a>
+        <div class="card-body">
+          <span class="card-tag">Film Review</span>
+          <h2 id="article-royal-hotel">Have you watched The Royal Hotel?</h2>
+          <p>
+            A 2023 Australian psychological thriller directed by Kitty Green, starring Julia Garner and Hugo Weaving. Two backpackers take a live-in bartending job at a remote outback pub — and what follows is deeply unsettling. Inspired by the 2016 documentary <em>Hotel Coolgardie</em>.
+          </p>
+          <a href="https://www.imdb.com/title/tt18363072/" target="_blank" rel="noopener" class="card-link">IMDB</a>
+        </div>
+      </article>
+
+      <!-- Card 2: Blink Twice -->
+      <article class="card" aria-labelledby="article-blink-twice" role="listitem">
+        <a href="https://www.imdb.com/title/tt14858658/" target="_blank" rel="noopener" aria-label="View Blink Twice on IMDB (opens in new tab)">
+          <img
+            class="card-img"
+            src="blink-twice.jpg"
+            alt="Blink Twice 2024 movie poster featuring Naomi Ackie and Channing Tatum"
+            loading="lazy"
+          />
+        </a>
+        <div class="card-body">
+          <span class="card-tag">Film Review</span>
+          <h2 id="article-blink-twice">Have you watched Blink Twice?</h2>
+          <p>
+            Zoë Kravitz's directorial debut — a 2024 psychological thriller starring Naomi Ackie and Channing Tatum. A cocktail waitress invited to a billionaire's private island starts questioning her reality. Contains mature themes including depictions of violence.
+          </p>
+          <a href="https://www.imdb.com/title/tt14858658/" target="_blank" rel="noopener" class="card-link">IMDB</a>
+        </div>
+      </article>
+
+      <!-- Card 3+4: Poem (2-col span) -->
+      <article class="card card-poem" aria-labelledby="article-poem" role="listitem">
+        <img
+          class="card-img"
+          src="fungus.avif"
+          alt="Illustration for the poem People are Like Fungus"
+          loading="lazy"
+        />
+        <div class="card-body">
+          <span class="card-tag">Poetry</span>
+          <h2 id="article-poem">People are Like Fungus</h2>
+          <pre aria-label="Poem: People are Like Fungus, written at 3:45am 30th November 2016">we are like fungus,
+we grow around them
+as people gets to know us.
+
+from a dot of possibilities
+to a bundle of disgust !
+
+when the spot's all damp and green
+we try to fix the scene
+we smother them,
+suffocate them,
+make them weep !
+
+collect their tears
+and use them to sweep
+
+when the spot's all clean and shiny
+we wonder
+how could it hurt so much
+something so, so tiny !
+
+only after they're gone
+we realize the marks they leave
+to get them back
+what wouldn't we give !
+
+from a dot of possibilities
+to a bundle of disgust !
+
+we loathe ourselves
+we can't
+clean memories of the past
+
+something so damp
+something so green
+something so sick
+makes us so hopeless
+powerless
+a two-faced prick !
+
+we are like fungus.
+a little rain
+a little self-loathing
+and a little past
+always brings the best in us!</pre>
+          <p class="poem-meta">— 3:45 am, 30th November 2016</p>
+        </div>
+      </article>
+
+    </div><!-- /.grid -->
+
+    <!-- ─── CONTACT ─── -->
+    <section id="contact" aria-labelledby="contact-heading">
+      <p class="section-label">Get in Touch</p>
+      <div class="contact-section">
+        <h2 id="contact-heading">Contact</h2>
+        <p class="sub">Leave your details and I'll get back to you as soon as I can.</p>
+
+        <form action="#" method="POST" novalidate aria-label="Contact form" class="form-grid">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="name" name="name" required autocomplete="name"
+                placeholder="John Smith" aria-describedby="name-error" />
+              <span id="name-error" class="field-msg" role="alert" aria-live="polite">Please enter your full name.</span>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address <span class="req" aria-hidden="true">*</span></label>
+              <input type="email" id="email" name="email" required autocomplete="email"
+                placeholder="you@example.com" aria-describedby="email-error" />
+              <span id="email-error" class="field-msg" role="alert" aria-live="polite">Please enter a valid email address.</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel"
+              placeholder="+61 400 000 000" aria-describedby="phone-hint" />
+            <span id="phone-hint" class="field-hint">Optional — include your country code.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5"
+              placeholder="Write your message here…" aria-describedby="message-hint"></textarea>
+            <span id="message-hint" class="field-hint">Optional — tell me how I can help.</span>
+          </div>
+
+          <p class="form-note"><span aria-hidden="true" style="color:var(--accent);">*</span> Required fields</p>
+
+          <button type="submit" class="btn-submit" aria-label="Submit contact form">Send Message</button>
+
+        </form>
+      </div>
     </section>
+
   </main>
 
-  <button
-    onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-    style="position: fixed; bottom: 20px; right: 20px; background: #1a1a2e; color: white; border: none; padding: 10px 15px; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
-    ↑
-  </button>
-
+  <!-- ─── FOOTER ─── -->
   <footer>
     <p>&copy; 2026 Masudul Hasan Shakil. All rights reserved.</p>
   </footer>
+
+  <!-- Back to top -->
+  <button
+    class="back-top"
+    onclick="window.scrollTo({top:0,behavior:'smooth'})"
+    aria-label="Back to top of page"
+    title="Back to top"
+  >↑</button>
+
+  <!-- ─── Hamburger JS ─── -->
+  <script>
+    const btn    = document.getElementById('hamburger-btn');
+    const drawer = document.getElementById('nav-drawer');
+
+    btn.addEventListener('click', () => {
+      const open = drawer.classList.toggle('open');
+      btn.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open);
+    });
+
+    // Close when a drawer link is tapped
+    drawer.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        drawer.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Close on outside click
+    document.addEventListener('click', e => {
+      if (!btn.contains(e.target) && !drawer.contains(e.target)) {
+        drawer.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  </script>
 
 </body>
 </html>
