@@ -41,8 +41,8 @@
   <!-- Mobile nav drawer -->
   <nav class="nav-drawer" id="nav-drawer" aria-label="Mobile navigation">
     <a href="#">Home</a>
-    <a href="task-manager.html">Task Manager</a>
-    <a href="registration-form.html">Register</a>
+    <a href="#">About</a>
+    <a href="#">Articles</a>
     <a href="#contact">Contact</a>
   </nav>
 
@@ -162,48 +162,6 @@ always brings the best in us!</pre>
 
     </div><!-- /.grid -->
 
-    <!-- ─── REGISTRATION ─── -->
-    <section id="register" aria-labelledby="register-heading">
-      <p class="section-label">Join the Community</p>
-      <div class="contact-section">
-        <h2 id="register-heading">Create an Account</h2>
-        <p class="sub">Register to stay updated with new articles and poems.</p>
-
-        <form id="form" action="#" method="POST" novalidate aria-label="Registration form" class="form-grid">
-
-          <div class="form-group">
-            <label for="username">Username <span class="req" aria-hidden="true">*</span></label>
-            <input type="text" id="username" name="username" required
-              placeholder="e.g. shakil_writes" autocomplete="username"
-              aria-describedby="username-counter username-error" />
-            <p id="username-counter" class="field-hint" aria-live="polite">Characters: 0</p>
-            <span id="username-error" class="field-msg" role="alert" aria-live="polite"></span>
-          </div>
-
-          <div class="form-group">
-            <label for="reg-email">Email Address <span class="req" aria-hidden="true">*</span></label>
-            <input type="email" id="reg-email" name="email" required autocomplete="email"
-              placeholder="you@example.com" aria-describedby="reg-email-error" />
-            <span id="reg-email-error" class="field-msg" role="alert" aria-live="polite"></span>
-          </div>
-
-          <div class="form-group">
-            <label for="password">Password <span class="req" aria-hidden="true">*</span></label>
-            <input type="password" id="password" name="password" required autocomplete="new-password"
-              placeholder="Minimum 8 characters" aria-describedby="password-error" />
-            <span id="password-error" class="field-msg" role="alert" aria-live="polite"></span>
-          </div>
-
-          <p class="form-note"><span aria-hidden="true" style="color:var(--accent);">*</span> Required fields</p>
-
-          <p id="error" class="field-msg reg-feedback" role="alert" aria-live="polite"></p>
-
-          <button type="submit" class="btn-submit" aria-label="Submit registration form">Register</button>
-
-        </form>
-      </div>
-    </section>
-
     <!-- ─── CONTACT ─── -->
     <section id="contact" aria-labelledby="contact-heading">
       <p class="section-label">Get in Touch</p>
@@ -264,54 +222,6 @@ always brings the best in us!</pre>
     aria-label="Back to top of page"
     title="Back to top"
   >↑</button>
-
-  <!-- ─── Registration JS ─── -->
-  <script>
-    // --- Form validation ---
-    const form  = document.querySelector("#form");
-    const error = document.querySelector("#error");
-
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const username = document.querySelector("#username").value;
-      const email    = document.querySelector("#reg-email").value;
-      const password = document.querySelector("#password").value;
-
-      // Clear previous feedback
-      error.textContent = "";
-      error.style.color = "";
-
-      if (username.length < 5) {
-        error.textContent = "Username too short — must be at least 5 characters.";
-        error.style.color = "var(--accent, #c0392b)";
-        document.querySelector("#username").focus();
-      } else if (!email.includes("@")) {
-        error.textContent = "Invalid email — please include an @ symbol.";
-        error.style.color = "var(--accent, #c0392b)";
-        document.querySelector("#reg-email").focus();
-      } else if (password.length < 8) {
-        error.textContent = "Password must be 8+ characters.";
-        error.style.color = "var(--accent, #c0392b)";
-        document.querySelector("#password").focus();
-      } else {
-        form.reset();
-        document.getElementById("username-counter").textContent = "Characters: 0";
-        error.textContent = "Thank you for your interest, you have been registered!";
-        error.style.color = "green";
-        error.style.fontWeight = "600";
-        error.style.display = "block";
-      }
-    });
-
-    // --- Live character counter ---
-    const usernameInput   = document.querySelector("#username");
-    const existingCounter = document.getElementById("username-counter");
-
-    usernameInput.addEventListener("input", () => {
-      existingCounter.textContent = `Characters: ${usernameInput.value.length}`;
-    });
-  </script>
 
   <!-- ─── Hamburger JS ─── -->
   <script>

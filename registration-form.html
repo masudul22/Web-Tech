@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #faf7f2;
+      --card:      #ffffff;
+      --border:    #e0d9cf;
+      --text:      #1a1710;
+      --muted:     #9a9080;
+      --accent:    #b85c38;
+      --accent2:   #3d6b4f;
+      --err:       #c0392b;
+      --ok:        #2e7d52;
+      --radius:    12px;
+      --serif:     'Fraunces', Georgia, serif;
+      --mono:      'DM Mono', monospace;
+      --transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 48px 20px 80px;
+      transition: background-color var(--transition);
+    }
+
+    /* ── Colour-changer button ──────────────────────────────────── */
+    .palette-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 36px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    #colour-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: 8px 16px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text);
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+    }
+
+    #colour-btn:hover {
+      border-color: var(--accent);
+      box-shadow: 0 2px 12px rgba(184,92,56,0.15);
+      transform: translateY(-1px);
+    }
+
+    #colour-btn:active { transform: scale(0.96); }
+
+    .swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      transition: background var(--transition);
+      flex-shrink: 0;
+    }
+
+    /* ── Card ───────────────────────────────────────────────────── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px 44px 44px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+    }
+
+    .card-header { margin-bottom: 36px; }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    h1 {
+      font-family: var(--serif);
+      font-size: 34px;
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    h1 em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--muted);
+    }
+
+    /* ── Form fields ────────────────────────────────────────────── */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px 16px;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .input-wrap { position: relative; }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      font-family: var(--mono);
+      font-size: 13.5px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input::placeholder { color: #c5bdb3; }
+
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(184,92,56,0.1);
+    }
+
+    input.valid {
+      border-color: var(--ok);
+      box-shadow: 0 0 0 3px rgba(46,125,82,0.08);
+    }
+
+    input.invalid {
+      border-color: var(--err);
+      box-shadow: 0 0 0 3px rgba(192,57,43,0.08);
+    }
+
+    /* Status icon inside input */
+    .status-icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    input.valid  ~ .status-icon,
+    input.invalid ~ .status-icon { opacity: 1; }
+
+    input.valid  ~ .status-icon::after { content: '✓'; color: var(--ok); }
+    input.invalid ~ .status-icon::after { content: '✗'; color: var(--err); }
+
+    /* Field hint / error line */
+    .field-hint {
+      font-size: 11px;
+      min-height: 15px;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .field-hint.error { color: var(--err); }
+    .field-hint.success { color: var(--ok); }
+
+    /* ── Character counter ──────────────────────────────────────── */
+    .counter-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .char-counter {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .char-counter.warn  { color: #e67e22; }
+    .char-counter.ok    { color: var(--ok); }
+
+    /* ── Password strength ──────────────────────────────────────── */
+    .strength-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .strength-seg {
+      height: 3px;
+      border-radius: 99px;
+      background: var(--border);
+      transition: background 0.3s;
+    }
+
+    .strength-seg.lit-1 { background: var(--err); }
+    .strength-seg.lit-2 { background: #e67e22; }
+    .strength-seg.lit-3 { background: #f1c40f; }
+    .strength-seg.lit-4 { background: var(--ok); }
+
+    /* ── Submit button ──────────────────────────────────────────── */
+    .submit-row {
+      margin-top: 28px;
+      grid-column: 1 / -1;
+    }
+
+    #submit-btn {
+      width: 100%;
+      background: var(--text);
+      color: var(--bg);
+      border: none;
+      border-radius: var(--radius);
+      padding: 15px;
+      font-family: var(--serif);
+      font-size: 16px;
+      font-weight: 600;
+      font-style: italic;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+
+    #submit-btn:hover {
+      background: var(--accent);
+      box-shadow: 0 4px 20px rgba(184,92,56,0.3);
+      transform: translateY(-1px);
+    }
+
+    #submit-btn:active { transform: scale(0.98); }
+
+    /* ── Success toast ──────────────────────────────────────────── */
+    #toast {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 18px;
+      background: #edf7f1;
+      border: 1px solid #a8d5b8;
+      border-radius: var(--radius);
+      color: var(--ok);
+      font-size: 13px;
+      text-align: center;
+      grid-column: 1/-1;
+    }
+
+    /* ── Responsive ─────────────────────────────────────────────── */
+    @media (max-width: 480px) {
+      .card { padding: 32px 24px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Colour changer -->
+  <div class="palette-row">
+    <span>Background</span>
+    <button id="colour-btn">
+      <span class="swatch" id="swatch"></span>
+      Change colour
+    </button>
+  </div>
+
+  <!-- Card -->
+  <div class="card">
+    <div class="card-header">
+      <p class="eyebrow">Create account</p>
+      <h1>Nice to meet <em>you.</em></h1>
+    </div>
+
+    <div class="form-grid" id="reg-form">
+
+      <!-- First Name -->
+      <div class="field">
+        <label for="first-name">First Name</label>
+        <div class="input-wrap">
+          <input type="text" id="first-name" placeholder="Jane" autocomplete="given-name"/>
+          <span class="status-icon"></span>
+        </div>
+        <span class="field-hint" id="hint-first"></span>
+      </div>
+
+      <!-- Last Name -->
+      <div class="field">
+        <label for="last-name">Last Name</label>
+        <div class="input-wrap">
+          <input type="text" id="last-name" placeholder="Smith" autocomplete="family-name"/>
+          <span class="status-icon"></span>
+        </div>
+        <span class="field-hint" id="hint-last"></span>
+      </div>
+
+      <!-- Username -->
+      <div class="field full">
+        <div class="counter-row">
+          <label for="username">Username</label>
+          <span class="char-counter" id="counter-username">0 chars</span>
+        </div>
+        <div class="input-wrap">
+          <input type="text" id="username" placeholder="min. 8 characters" autocomplete="username" maxlength="30"/>
+          <span class="status-icon"></span>
+        </div>
+        <span class="field-hint" id="hint-username">At least 8 characters, letters and numbers only.</span>
+      </div>
+
+      <!-- Email -->
+      <div class="field full">
+        <div class="counter-row">
+          <label for="email">Email</label>
+          <span class="char-counter" id="counter-email">0 chars</span>
+        </div>
+        <div class="input-wrap">
+          <input type="email" id="email" placeholder="jane@example.com" autocomplete="email"/>
+          <span class="status-icon"></span>
+        </div>
+        <span class="field-hint" id="hint-email">Must be a valid email address.</span>
+      </div>
+
+      <!-- Password -->
+      <div class="field full">
+        <div class="counter-row">
+          <label for="password">Password</label>
+          <span class="char-counter" id="counter-password">0 chars</span>
+        </div>
+        <div class="input-wrap">
+          <input type="password" id="password" placeholder="min. 8 chars, 1 number, 1 special" autocomplete="new-password"/>
+          <span class="status-icon"></span>
+        </div>
+        <div class="strength-bar">
+          <div class="strength-seg" id="seg1"></div>
+          <div class="strength-seg" id="seg2"></div>
+          <div class="strength-seg" id="seg3"></div>
+          <div class="strength-seg" id="seg4"></div>
+        </div>
+        <span class="field-hint" id="hint-password">Min 8 chars · 1 number · 1 special character (!@#$…)</span>
+      </div>
+
+      <!-- Submit -->
+      <div class="submit-row">
+        <button id="submit-btn">Create my account →</button>
+        <div id="toast">🎉 Account created successfully! Welcome aboard.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ════════════════════════════════════════════════════════════
+    //  BACKGROUND COLOUR CHANGER
+    // ════════════════════════════════════════════════════════════
+    const colourBtn = document.querySelector('#colour-btn');
+    const swatch    = document.querySelector('#swatch');
+
+    const palettes = [
+      { bg: '#faf7f2', label: 'Warm Ivory'   },
+      { bg: '#f0f4f8', label: 'Cool Mist'    },
+      { bg: '#f5f0fa', label: 'Soft Lavender'},
+      { bg: '#f0f7f4', label: 'Sage Tint'    },
+      { bg: '#fdf4ec', label: 'Peach Haze'   },
+      { bg: '#f7f2ee', label: 'Sandstone'    },
+      { bg: '#1a1710', label: 'Midnight'     },
+    ];
+
+    let paletteIndex = 0;
+
+    colourBtn.addEventListener('click', () => {
+      paletteIndex = (paletteIndex + 1) % palettes.length;
+      const { bg } = palettes[paletteIndex];
+      document.body.style.backgroundColor = bg;
+      swatch.style.background = bg;
+
+      // Flip text colour for dark palette
+      const isDark = paletteIndex === palettes.length - 1;
+      document.body.style.color = isDark ? '#faf7f2' : '';
+      document.querySelectorAll('input').forEach(el => {
+        el.style.background = isDark ? '#2a2720' : '';
+        el.style.color      = isDark ? '#faf7f2' : '';
+        el.style.borderColor = isDark ? '#3a3730' : '';
+      });
+    });
+
+    // ════════════════════════════════════════════════════════════
+    //  HELPERS
+    // ════════════════════════════════════════════════════════════
+    const setValid = (input, hintEl, msg = '') => {
+      input.classList.remove('invalid');
+      input.classList.add('valid');
+      hintEl.textContent = msg;
+      hintEl.className = `field-hint ${msg ? 'success' : ''}`;
+    };
+
+    const setInvalid = (input, hintEl, msg) => {
+      input.classList.remove('valid');
+      input.classList.add('invalid');
+      hintEl.textContent = msg;
+      hintEl.className = 'field-hint error';
+    };
+
+    const clearState = (input, hintEl, defaultMsg = '') => {
+      input.classList.remove('valid', 'invalid');
+      hintEl.textContent = defaultMsg;
+      hintEl.className = 'field-hint';
+    };
+
+    // Live character counter updater
+    const updateCounter = (counterEl, length, min = 0) => {
+      counterEl.textContent = `${length} char${length !== 1 ? 's' : ''}`;
+      counterEl.className = 'char-counter';
+      if (length === 0) return;
+      if (length >= min) counterEl.classList.add('ok');
+      else counterEl.classList.add('warn');
+    };
+
+    // ════════════════════════════════════════════════════════════
+    //  FIELD REFERENCES
+    // ════════════════════════════════════════════════════════════
+    const firstName = document.querySelector('#first-name');
+    const lastName  = document.querySelector('#last-name');
+    const username  = document.querySelector('#username');
+    const email     = document.querySelector('#email');
+    const password  = document.querySelector('#password');
+
+    const hintFirst    = document.querySelector('#hint-first');
+    const hintLast     = document.querySelector('#hint-last');
+    const hintUsername = document.querySelector('#hint-username');
+    const hintEmail    = document.querySelector('#hint-email');
+    const hintPassword = document.querySelector('#hint-password');
+
+    const counterUsername = document.querySelector('#counter-username');
+    const counterEmail    = document.querySelector('#counter-email');
+    const counterPassword = document.querySelector('#counter-password');
+
+    const segs = [1,2,3,4].map(n => document.querySelector(`#seg${n}`));
+
+    // ════════════════════════════════════════════════════════════
+    //  VALIDATION RULES
+    // ════════════════════════════════════════════════════════════
+    const validators = {
+      firstName: (v) => {
+        if (!v) return clearState(firstName, hintFirst);
+        if (v.length < 2) return setInvalid(firstName, hintFirst, 'Name too short.');
+        setValid(firstName, hintFirst, '');
+      },
+      lastName: (v) => {
+        if (!v) return clearState(lastName, hintLast);
+        if (v.length < 2) return setInvalid(lastName, hintLast, 'Name too short.');
+        setValid(lastName, hintLast, '');
+      },
+      username: (v) => {
+        updateCounter(counterUsername, v.length, 8);
+        if (!v) return clearState(username, hintUsername, 'At least 8 characters, letters and numbers only.');
+        if (v.length < 8) return setInvalid(username, hintUsername, `${8 - v.length} more character${8 - v.length > 1 ? 's' : ''} needed.`);
+        if (!/^[a-zA-Z0-9_]+$/.test(v)) return setInvalid(username, hintUsername, 'Letters, numbers and underscores only.');
+        setValid(username, hintUsername, 'Looks good!');
+      },
+      email: (v) => {
+        updateCounter(counterEmail, v.length, 6);
+        if (!v) return clearState(email, hintEmail, 'Must be a valid email address.');
+        const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRx.test(v)) return setInvalid(email, hintEmail, 'Enter a valid email address.');
+        setValid(email, hintEmail, 'Valid email.');
+      },
+      password: (v) => {
+        updateCounter(counterPassword, v.length, 8);
+        // Strength scoring
+        let score = 0;
+        if (v.length >= 8)              score++;
+        if (/[A-Z]/.test(v))            score++;
+        if (/[0-9]/.test(v))            score++;
+        if (/[^a-zA-Z0-9]/.test(v))     score++;
+
+        segs.forEach((seg, i) => {
+          seg.className = 'strength-seg';
+          if (i < score) seg.classList.add(`lit-${score}`);
+        });
+
+        if (!v) return clearState(password, hintPassword, 'Min 8 chars · 1 number · 1 special character (!@#$…)');
+        if (v.length < 8) return setInvalid(password, hintPassword, `${8 - v.length} more character${8 - v.length > 1 ? 's' : ''} needed.`);
+        if (!/[0-9]/.test(v)) return setInvalid(password, hintPassword, 'Must include at least one number.');
+        if (!/[^a-zA-Z0-9]/.test(v)) return setInvalid(password, hintPassword, 'Must include at least one special character.');
+        setValid(password, hintPassword, score === 4 ? 'Strong password!' : 'Password accepted.');
+      },
+    };
+
+    // ════════════════════════════════════════════════════════════
+    //  LIVE CHARACTER COUNTERS + REAL-TIME VALIDATION
+    // ════════════════════════════════════════════════════════════
+    firstName.addEventListener('input', () => validators.firstName(firstName.value.trim()));
+    lastName .addEventListener('input', () => validators.lastName(lastName.value.trim()));
+    username .addEventListener('input', () => validators.username(username.value.trim()));
+    email    .addEventListener('input', () => validators.email(email.value.trim()));
+    password .addEventListener('input', () => validators.password(password.value));
+
+    // ════════════════════════════════════════════════════════════
+    //  SUBMIT
+    // ════════════════════════════════════════════════════════════
+    const submitBtn = document.querySelector('#submit-btn');
+    const toast     = document.querySelector('#toast');
+
+    submitBtn.addEventListener('click', () => {
+      // Run all validators once on submit
+      validators.firstName(firstName.value.trim());
+      validators.lastName(lastName.value.trim());
+      validators.username(username.value.trim());
+      validators.email(email.value.trim());
+      validators.password(password.value);
+
+      const allValid = [firstName, lastName, username, email, password]
+        .every(el => el.classList.contains('valid'));
+
+      if (allValid) {
+        toast.style.display = 'block';
+        submitBtn.textContent = '✓ Submitted';
+        submitBtn.style.background = 'var(--ok)';
+        submitBtn.disabled = true;
+      } else {
+        // Scroll to first invalid
+        const firstInvalid = document.querySelector('input.invalid');
+        if (firstInvalid) firstInvalid.focus();
+      }
+    });
+  </script>
+</body>
+</html>
