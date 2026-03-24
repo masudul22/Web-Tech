@@ -277,6 +277,34 @@
       background: var(--del-dim);
     }
 
+    /* Home button */
+    .home-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: 7px 16px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      text-decoration: none;
+      margin-bottom: 32px;
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+    }
+
+    .home-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .home-btn:active { transform: scale(0.96); }
+
     /* Keyboard hint */
     .hint {
       margin-top: 24px;
@@ -299,6 +327,8 @@
 </head>
 <body>
   <div class="container">
+    <a href="index.html" class="home-btn">← Home</a>
+
     <header>
       <p class="label">// task manager</p>
       <h1>GET THINGS<br><span>DONE.</span></h1>
