@@ -97,6 +97,12 @@
         const detailHTML = `
           <div class="movie-detail-content-wrapper">
             <div class="movie-detail-poster-section">
+              <button class="back-button" onclick="history.back()" aria-label="Go back to previous page" title="Go back">
+                <svg class="back-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M15 18l-6-6 6-6"/>
+                </svg>
+                <span>Back</span>
+              </button>
               <img id="detail-movie-poster" src="" alt="${cleanedTitle} poster" class="movie-detail-poster" style="display: none;" />
               <div id="detail-movie-poster-placeholder" class="movie-detail-poster-placeholder">
                 <p>Poster Not Found</p>

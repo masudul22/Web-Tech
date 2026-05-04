@@ -30,7 +30,8 @@
       font-size: 1.8rem;
       font-weight: 700;
       margin-bottom: 8px;
-      color: var(--text-primary);
+      color: var(--primary);
+      text-align: center;
     }
 
     .auth-form p {
@@ -51,6 +52,10 @@
       font-size: 0.9rem;
     }
 
+    .form-group label .required {
+      color: #dc3545;
+    }
+
     .form-group input {
       width: 100%;
       padding: 12px 16px;
@@ -61,6 +66,7 @@
       font-family: inherit;
       font-size: 0.95rem;
       transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
     }
 
     .form-group input:focus {
@@ -69,8 +75,24 @@
       box-shadow: 0 0 0 3px var(--primary-muted);
     }
 
+    .form-group input.error {
+      border-color: #dc3545;
+      box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+    }
+
     .form-group input::placeholder {
       color: var(--text-muted);
+    }
+
+    .field-error {
+      color: #dc3545;
+      font-size: 0.8rem;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .field-error.show {
+      display: block;
     }
 
     .btn-primary {
@@ -172,35 +194,39 @@
   <!-- MAIN CONTENT -->
   <main id="main-content" class="main" tabindex="-1">
     <div class="auth-container">
-      <form class="auth-form" id="register-form">
-        <h1>Create Account</h1>
-        <p>Join ThePortal to build your movie lists</p>
+      <form class="auth-form" id="register-form" novalidate>
+        <h1>Join ThePortal</h1>
 
         <div id="message-container"></div>
 
         <div class="form-group">
           <label for="name">Full Name</label>
-          <input type="text" id="name" name="name" placeholder="John Doe" required />
+          <input type="text" id="name" name="name" placeholder="John Doe" />
+          <div class="field-error" id="name-error">Full name is required</div>
         </div>
 
         <div class="form-group">
           <label for="username">Username</label>
-          <input type="text" id="username" name="username" placeholder="johndoe" required />
+          <input type="text" id="username" name="username" placeholder="johndoe" />
+          <div class="field-error" id="username-error">Username is required</div>
         </div>
 
         <div class="form-group">
           <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" placeholder="john@example.com" required />
+          <input type="email" id="email" name="email" placeholder="john@example.com" />
+          <div class="field-error" id="email-error">Email address is required</div>
         </div>
 
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" name="password" placeholder="At least 6 characters" required />
+          <input type="password" id="password" name="password" placeholder="At least 6 characters" />
+          <div class="field-error" id="password-error">Password is required</div>
         </div>
 
         <div class="form-group">
           <label for="passwordConfirm">Confirm Password</label>
-          <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="Confirm password" required />
+          <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="Confirm password" />
+          <div class="field-error" id="passwordConfirm-error">Confirm password is required</div>
         </div>
 
         <button type="submit" class="btn-primary">Create Account</button>
@@ -217,7 +243,31 @@
   <script src="app.js"></script>
   <script src="auth.js"></script>
   <script>
-    document.getElementById('register-form').addEventListener('submit', async (e) => {
+    const form = document.getElementById('register-form');
+    const inputs = form.querySelectorAll('input[type="text"], input[type="email"], input[type="password"]');
+
+    // Email validation function - checks for @ and . with text after dot
+    function isValidEmail(email) {
+      return email.includes('@') && email.includes('.') && email.indexOf('@') < email.lastIndexOf('.') && email.lastIndexOf('.') < email.length - 1;
+    }
+
+    // Password validation function - checks for minimum length
+    function isValidPassword(password) {
+      return password.length >= 6;
+    }
+
+    // Clear error on input
+    inputs.forEach(input => {
+      input.addEventListener('input', () => {
+        input.classList.remove('error');
+        const errorEl = document.getElementById(input.id + '-error');
+        if (errorEl) {
+          errorEl.classList.remove('show');
+        }
+      });
+    });
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const name = document.getElementById('name').value.trim();
@@ -229,6 +279,59 @@
       const messageContainer = document.getElementById('message-container');
       messageContainer.innerHTML = '';
 
+      // Validate all fields
+      const errors = {};
+      const emailInput = document.getElementById('email');
+      
+      if (!name) errors.name = true;
+      if (!username) errors.username = true;
+      if (!email) {
+        errors.email = true;
+      } else if (!isValidEmail(email)) {
+        errors.email = 'invalid';
+      }
+      if (!password) {
+        errors.password = true;
+      } else if (!isValidPassword(password)) {
+        errors.password = 'tooShort';
+      }
+      if (!passwordConfirm) {
+        errors.passwordConfirm = true;
+      } else if (password !== passwordConfirm) {
+        errors.passwordConfirm = 'mismatch';
+      }
+
+      // Display validation errors
+      Object.keys(errors).forEach(fieldName => {
+        const input = document.getElementById(fieldName);
+        const errorEl = document.getElementById(fieldName + '-error');
+        if (input && errorEl) {
+          input.classList.add('error');
+          errorEl.classList.add('show');
+          if (fieldName === 'email' && errors[fieldName] === 'invalid') {
+            errorEl.textContent = 'Please enter a valid email address';
+          } else if (fieldName === 'email' && errors[fieldName] === true) {
+            errorEl.textContent = 'Email address is required';
+          } else if (fieldName === 'password' && errors[fieldName] === 'tooShort') {
+            errorEl.textContent = 'Password must be at least 6 characters';
+          } else if (fieldName === 'password' && errors[fieldName] === true) {
+            errorEl.textContent = 'Password is required';
+          } else if (fieldName === 'passwordConfirm' && errors[fieldName] === 'mismatch') {
+            errorEl.textContent = 'Passwords do not match';
+          } else if (fieldName === 'passwordConfirm' && errors[fieldName] === true) {
+            errorEl.textContent = 'Confirm password is required';
+          }
+        }
+      });
+
+      // If there are validation errors, stop here
+      if (Object.keys(errors).length > 0) {
+        return;
+      }
+
+      const button = e.target.querySelector('button');
+      button.disabled = true;
+
       try {
         const response = await fetch('/api/auth/register', {
           method: 'POST',
@@ -239,12 +342,41 @@
         const data = await response.json();
 
         if (!response.ok) {
-          messageContainer.innerHTML = `<div class="error-message">${data.error}</div>`;
+          // Parse error message to identify which field caused the issue
+          const errorMsg = data.error || 'Failed to register user';
+          
+          // Check if error is field-specific and show it accordingly
+          if (errorMsg.toLowerCase().includes('username')) {
+            const emailInput = document.getElementById('username');
+            const errorEl = document.getElementById('username-error');
+            emailInput.classList.add('error');
+            errorEl.classList.add('show');
+            errorEl.textContent = errorMsg;
+          } else if (errorMsg.toLowerCase().includes('email')) {
+            const emailInput = document.getElementById('email');
+            const errorEl = document.getElementById('email-error');
+            emailInput.classList.add('error');
+            errorEl.classList.add('show');
+            errorEl.textContent = errorMsg;
+          } else if (errorMsg.toLowerCase().includes('password')) {
+            const passwordInput = document.getElementById('password');
+            const errorEl = document.getElementById('password-error');
+            passwordInput.classList.add('error');
+            errorEl.classList.add('show');
+            errorEl.textContent = errorMsg;
+          } else {
+            messageContainer.innerHTML = `<div class="error-message">${errorMsg}</div>`;
+          }
+          
+          button.disabled = false;
           return;
         }
 
         // Save token
         localStorage.setItem('authToken', data.token);
+
+        // Scroll to top
+        window.scrollTo(0, 0);
 
         messageContainer.innerHTML = '<div class="success-message">Account created successfully! Redirecting...</div>';
 
@@ -253,6 +385,7 @@
         }, 1500);
       } catch (error) {
         messageContainer.innerHTML = `<div class="error-message">An error occurred. Please try again.</div>`;
+        button.disabled = false;
         console.error('Registration error:', error);
       }
     });

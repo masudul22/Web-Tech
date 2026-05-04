@@ -66,7 +66,7 @@
       
       const response = await fetch(searchUrl);
       
-      if (!response.ok) return;
+      if (!response.ok) return false;
       
       const data = await response.json();
       
@@ -80,11 +80,13 @@
           posterPlaceholder.style.display = 'none';
           
           if (callback) callback(posterUrl);
-          return posterUrl;
+          return true;
         }
       }
+      return false;
     } catch (error) {
       console.warn(`Could not fetch poster for ${title}:`, error);
+      return false;
     }
   }
 
@@ -261,19 +263,28 @@
           fetchTMDBPoster(movie.Title, movie.Year, posterImg, posterPlaceholder);
         }
         
-        // Fetch poster for card preview from first movie
+        // Fetch poster for card preview from first available movie with a poster
         if (topTenMovies.length > 0 && cardImgId && cardPlaceholderId && cardPosterId) {
           const cardImg = $(`#${cardImgId}`);
           const cardPlaceholder = $(`#${cardPlaceholderId}`);
           const cardPoster = $(`#${cardPosterId}`);
           
           if (cardImg && cardPlaceholder) {
-            const firstMovie = topTenMovies[0];
-            fetchTMDBPoster(firstMovie.Title, firstMovie.Year, cardImg, cardPlaceholder, (posterUrl) => {
-              if (posterUrl && cardPoster) {
-                cardPoster.style.display = 'block';
+            // Try to fetch poster from each movie in order until one succeeds
+            (async () => {
+              let posterFound = false;
+              for (const movie of topTenMovies) {
+                const success = await fetchTMDBPoster(movie.Title, movie.Year, cardImg, cardPlaceholder, (posterUrl) => {
+                  if (posterUrl && cardPoster) {
+                    cardPoster.style.display = 'block';
+                  }
+                });
+                if (success) {
+                  posterFound = true;
+                  break;
+                }
               }
-            });
+            })();
           }
         }
       } catch (error) {

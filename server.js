@@ -136,7 +136,7 @@ function parseIMDbCSV() {
 
 // Helper function to generate JWT token
 function generateToken(userId) {
-  return jwt.sign({ id: userId }, JWT_SECRET, { expiresIn: '30d' });
+  return jwt.sign({ id: userId }, JWT_SECRET, { expiresIn: '2h' });
 }
 
 /* ============================================================
@@ -189,6 +189,19 @@ app.post('/api/auth/register', async (req, res) => {
     });
   } catch (error) {
     console.error('Registration error:', error);
+    
+    // Handle MongoDB validation errors
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({ error: messages.join(', ') });
+    }
+    
+    // Handle duplicate key errors
+    if (error.code === 11000) {
+      const field = Object.keys(error.keyPattern)[0];
+      return res.status(400).json({ error: `${field.charAt(0).toUpperCase() + field.slice(1)} already in use` });
+    }
+    
     res.status(500).json({ error: 'Failed to register user' });
   }
 });
